@@ -1,0 +1,16 @@
+# This file may be used to create an environment using:
+# $ conda create --name <env> --file <this file>
+# platform: linux-64
+requests==2.24.0
+influxdb-client
+asyncio
+aiohttp
+simple_salesforce
+pandas
+influxdb-client[async]
+#influxdb-client[extra]
+datetime
+pygeohash
+#influxdb_client.client.write_api
+#influxdb_client.client.influxdb_client_async
+#InfluxDBClientAsync

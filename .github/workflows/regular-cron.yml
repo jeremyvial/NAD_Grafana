@@ -1,0 +1,43 @@
+name: Regular Cron
+
+on: 
+  schedule:
+    - cron: "*/15 * * * *" # runs at 15 min
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: checkout repo content
+        uses: actions/checkout@v2 # checkout the repository content to github runner 
+
+      - name: setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.7.7' # install the python version needed
+          
+      - name: install python packages
+        run: |
+          python -m pip install --upgrade pip
+          pip3 install -r requirements.txt 
+          
+      - name: execute py script # run sj-gobierno.py to get the latest data
+        env: 
+          EMAIL_ADDRESS: ${{ secrets.EMAIL_ADDRESS }}
+          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+          EMAIL_RECIPIENT: ${{ secrets.EMAIL_RECIPIENT }}
+          SF_CONSUMER_KEY: ${{ secrets.SF_CONSUMER_KEY }}
+          SF_CONSUMER_SECRET: ${{ secrets.SF_CONSUMER_SECRET }}
+          SF_USERNAME: ${{ secrets.SF_USERNAME }}
+          SF_PASSWORD: ${{ secrets.SF_PASSWORD }}
+          SF_TOKEN: ${{ secrets.SF_TOKEN }}
+
+          INF_URL: ${{ secrets.INF_URL }}
+          INF_TOKEN: ${{ secrets.INF_TOKEN }}
+          INF_ORG: ${{ secrets.INF_ORG }}
+          INF_BUCKET: ${{ secrets.INF_BUCKET }}
+        run: python script/update.py
